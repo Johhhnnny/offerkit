@@ -4,3 +4,5 @@
 @media(max-width:760px){.app-shell{padding:0 16px}.topbar{height:65px}.top-note{display:none}.hero{padding:54px 0 34px}.hero h1{letter-spacing:-2px}.hero-copy{font-size:13px}.workspace{grid-template-columns:1fr}.form-panel,.result-panel{padding:22px}.result-panel{min-height:520px}.how{padding:55px 0}.how h2{font-size:29px}.how-grid{grid-template-columns:1fr}.how-grid article{padding:18px}footer{flex-wrap:wrap;padding:18px 0;gap:10px}footer>span:nth-of-type(1){display:none}footer>span:nth-of-type(2){margin-left:auto}.two-cols{gap:10px}.live-pill{font-size:7px}}
 
 .version-card{border:1px solid #ffffff1b;border-radius:10px;padding:15px;margin-top:16px;background:#111b2255}.version-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}.version-heading .copy-btn{padding:7px 10px;font-size:10px}.version-card .result-text{margin:12px 0 2px;flex:initial}.result-content{gap:0}
+
+.calendar-result{flex:initial;white-space:pre-wrap}.result-content .calendar-result{margin-bottom:18px}
