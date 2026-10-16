@@ -1,0 +1,7 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "offerkit-ai",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-16",
+  "ai": { "binding": "AI" }
+}
