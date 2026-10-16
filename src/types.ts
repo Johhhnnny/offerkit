@@ -5,6 +5,9 @@ export interface GenerateRequest {
   businessType: string;
   offer: string;
   audience: string;
+  phone: string;
+  whatsapp: string;
+  location: string;
   platform: string;
   tone: Tone;
   kind: ContentKind;
