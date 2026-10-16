@@ -7,7 +7,7 @@ const tones: Tone[] = ["Friendly", "Bold", "Premium", "Funny", "Professional"];
 export default function App() {
   const [form, setForm] = useState<GenerateRequest>({
     businessName: "", businessType: "Fashion & beauty", offer: "", audience: "People nearby",
-    platform: "Instagram", tone: "Friendly", kind: "Social caption"
+    phone: "", whatsapp: "", location: "", platform: "Instagram", tone: "Friendly", kind: "Social caption"
   });
   const [result, setResult] = useState("");
   const [loading, setLoading] = useState(false);
@@ -49,6 +49,9 @@ export default function App() {
         <label>What kind of business?<select value={form.businessType} onChange={e => update("businessType", e.target.value)}>{["Fashion & beauty","Food & restaurant","Retail shop","Real estate","Fitness & wellness","Professional services","Events & entertainment","Other"].map(x => <option key={x}>{x}</option>)}</select></label>
         <label>What are you promoting?<textarea value={form.offer} onChange={e => update("offer", e.target.value)} placeholder="e.g. Friday barbecue, 10% off new arrivals, weekend special..." rows={3} /></label>
         <label>Who do you want to reach?<input value={form.audience} onChange={e => update("audience", e.target.value)} placeholder="e.g. students, parents, local customers" /></label>
+        <div className="contact-heading"><span className="step">OPTIONAL / CONTACT DETAILS</span><p>Add only the details you want customers to see in your advert.</p></div>
+        <div className="two-cols"><label>Business phone number<input type="tel" value={form.phone} onChange={e => update("phone", e.target.value)} placeholder="e.g. +234 800 000 0000" /></label><label>WhatsApp number<input type="tel" value={form.whatsapp} onChange={e => update("whatsapp", e.target.value)} placeholder="If different from phone" /></label></div>
+        <label>Business location or address<input value={form.location} onChange={e => update("location", e.target.value)} placeholder="e.g. Otuoke, Bayelsa State" /></label>
         <div className="two-cols"><label>Content type<select value={form.kind} onChange={e => update("kind", e.target.value as ContentKind)}>{kinds.map(x => <option key={x}>{x}</option>)}</select></label><label>Where will you post?<select value={form.platform} onChange={e => update("platform", e.target.value)}>{["Instagram","WhatsApp","Facebook","TikTok","X","Any platform"].map(x => <option key={x}>{x}</option>)}</select></label></div>
         <label>Choose a vibe<div className="tone-options">{tones.map(t => <button type="button" key={t} className={form.tone === t ? "tone active" : "tone"} onClick={() => update("tone", t)}>{t}</button>)}</div></label>
         <button className="generate" onClick={generate} disabled={loading}>{loading ? "Creating your content…" : "✦  Create my content"} <span>→</span></button>
@@ -69,6 +72,8 @@ function makeSample(f: GenerateRequest) {
   const name = f.businessName.trim() || "our business";
   const offer = f.offer.trim() || "something special just for you";
   const audience = f.audience.trim() || "you";
+  const contact = [f.phone.trim() ? `Call: ${f.phone.trim()}` : "", f.whatsapp.trim() ? `WhatsApp: ${f.whatsapp.trim()}` : "", f.location.trim() ? `Location: ${f.location.trim()}` : ""].filter(Boolean).join("\\n");
+  const contactLine = contact ? `\\n\\n${contact}` : "";
   if (f.kind === "Content calendar") return `A SIMPLE 3-DAY CONTENT PLAN FOR ${name.toUpperCase()}\n\nDAY 1 — INTRODUCE THE OFFER\nPost: ${offer}. Tell people why it matters and invite them to ask questions.\n\nDAY 2 — SHOW THE DETAILS\nShare a photo, behind-the-scenes moment or customer benefit. Speak directly to ${audience}.\n\nDAY 3 — CLEAR CALL TO ACTION\nRemind people how to order, book or visit. Make the next step easy.\n\nTip: Use real photos and reply promptly to every genuine enquiry.`;
   if (f.kind === "Video idea") return `SHORT VIDEO IDEA — ${name.toUpperCase()}\n\nHook (first 2 seconds): “Wait—have you seen this?”\n\nScene 1: Show the product, service or experience up close.\nScene 2: Put the offer on screen: ${offer}.\nScene 3: Show how a customer can get it.\n\nCaption: A little something for ${audience}. Send us a message to find out more!\n\nKeep it vertical, use clear lighting, and add captions.`;
   if (f.kind === "Flyer copy") return `${name.toUpperCase()}\n\n${offer.toUpperCase()}\n\nMade with ${audience} in mind.\n\nGet in touch today for details, bookings or orders.\n\nYour next favourite is closer than you think.`;
