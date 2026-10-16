@@ -30,7 +30,7 @@ export default {
       const tone = String(body.tone || "Friendly").slice(0, 60);
       const kind = String(body.kind || "Social caption").slice(0, 80);
       const prompt = `You are OfferKit AI, a practical marketing copywriter for small businesses. Create ${kind} for ${businessName}, a ${businessType} business. Promotion: ${offer}. Target audience: ${audience}. Platform: ${platform}. Tone: ${tone}. Write clear, specific, engaging copy with a useful call to action. Avoid unsupported claims, fake discounts, and excessive hashtags. Return only the finished draft.`;
-      const output = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+      const output = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fast", {
         messages: [
           { role: "system", content: "You write natural, concise marketing copy for small businesses. Do not invent facts such as prices, locations, guarantees or contact details." },
           { role: "user", content: prompt }
