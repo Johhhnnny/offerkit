@@ -1,29 +1,36 @@
-OfferKit AI
+# OfferKit AI
 
-OfferKit AI helps small businesses create marketing content quickly.
+OfferKit AI helps small businesses create marketing content quickly: promotional captions, WhatsApp adverts, content calendars, flyer copy, and short-form video ideas.
 
-Features
+## What's in the repository
 
-- Promotional captions
-- WhatsApp adverts
-- Social media content calendars
-- Flyer copy
-- Short-form video ideas
+- `src/`: React + TypeScript web application
+- `worker/index.ts`: Cloudflare Workers AI API
+- `wrangler.jsonc`: Worker configuration
+- `docs/`: deployment and pre-launch security notes
+- `.github/workflows/ci.yml`: build check on pushes and pull requests
 
-Project status
+## Run the web app locally
 
-This project is under development. The current prototype is not yet a production-ready service.
+Requirements: Node.js 20 or newer.
 
-Planned technology
+```bash
+npm install
+npm run dev
+```
 
-- React and TypeScript
-- Vite
-- Cloudflare Workers AI
-- Cloudflare D1
+To make a production build:
 
-Next steps
+```bash
+npm run build
+```
 
-1. Upload the complete application source files and folders.
-2. Install dependencies and run the build.
-3. Configure Cloudflare deployment.
-4. Add user authentication, usage limits, and payment integration before accepting customers.
+The frontend uses a sample draft when the API is not configured, so the interface can be previewed without an AI endpoint. To use live generation, deploy the Cloudflare Worker and set `VITE_API_URL` to its URL before building the frontend.
+
+## Deploy
+
+See [docs/deploy.md](docs/deploy.md) for Cloudflare Pages and Workers AI setup.
+
+## Important before accepting payments
+
+This is a prototype, not a production-ready paid service. It does not yet have user accounts, billing, server-side per-user usage limits, or a complete abuse-prevention system. Review [docs/security-checklist.md](docs/security-checklist.md) and implement these controls before launch.
