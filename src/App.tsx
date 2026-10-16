@@ -20,7 +20,7 @@ export default function App() {
   async function generate() {
     setLoading(true); setError(""); setResult("");
     try {
-      const endpoint = import.meta.env.VITE_API_URL || "/api/generate";
+      const endpoint = import.meta.env.VITE_API_URL || "https://offerkit-ai.josephmedeadzone.workers.dev";
       const response = await fetch(endpoint, {
         method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form)
       });
