@@ -25,3 +25,31 @@
 .saved-draft-actions{display:flex;flex-wrap:wrap;gap:7px;max-width:180px}
 .saved-draft-actions .copy-btn{padding:8px 10px;font-size:10px}
 @media(max-width:640px){.profile-actions{align-items:flex-start;flex-direction:column;gap:6px}.saved-work{padding:15px}.saved-work-heading{align-items:flex-start;flex-direction:column}.saved-draft{flex-direction:column}.saved-draft-actions{max-width:none}.saved-draft-actions .copy-btn{padding:9px 11px}}
+
+
+/* Export controls and transparent launch pricing */
+.export-actions{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 20px}
+.export-actions .copy-btn{padding:9px 12px}
+.usage-note{margin:8px 0 0;color:var(--muted);font-size:10px;line-height:1.6;text-align:center}
+.pricing{padding:68px 0 74px;scroll-margin-top:24px}
+.pricing-intro{max-width:650px;margin:0 auto 28px;text-align:center}
+.pricing-intro h2{font-size:clamp(29px,4vw,42px);line-height:1.14;letter-spacing:-1.5px;margin:13px 0}
+.pricing-intro h2 em{font-family:'Playfair Display',serif;color:var(--lime);font-weight:600}
+.pricing-intro>p{max-width:540px;margin:0 auto;color:var(--muted);font-size:13px;line-height:1.8}
+.pricing-notice{display:flex;flex-direction:column;gap:5px;text-align:left;margin:22px auto 0;max-width:520px;border:1px solid #d9fa7240;background:#d9fa7208;border-radius:10px;padding:13px 16px}
+.pricing-notice strong{font-size:12px;color:var(--lime)}
+.pricing-notice span{color:#aab7b3;font-size:11px;line-height:1.7}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+.price-card{display:flex;flex-direction:column;padding:23px 20px;border:1px solid #ffffff20;border-radius:14px;background:#17232c;min-width:0}
+.price-card-featured{border-color:#d9fa7270;background:linear-gradient(160deg,#1d302f,#17232c 55%)}
+.price-eyebrow{font:9px 'DM Mono',monospace;letter-spacing:1.1px;color:var(--lime)}
+.price-card h3{font-size:19px;letter-spacing:-.5px;margin:14px 0 4px}
+.price-amount{font-size:32px;letter-spacing:-1.2px;font-weight:700;margin:4px 0 10px}
+.price-amount span{font-size:10px;letter-spacing:0;font-weight:400;color:var(--muted)}
+.price-desc{font-size:12px;color:#aebbb6;line-height:1.75;min-height:42px;margin:0 0 14px}
+.price-card ul{list-style:none;padding:0;margin:0 0 20px;flex:1}
+.price-card li{position:relative;font-size:11px;line-height:1.7;color:#d4ddd9;padding:9px 0 9px 19px;border-top:1px solid #ffffff12}
+.price-card li:before{content:"✓";position:absolute;left:0;color:var(--lime)}
+.price-status{border-top:1px solid #ffffff1a;padding-top:14px;margin:0;color:var(--lime);font-size:10px;line-height:1.6}
+.pricing-footnote{max-width:900px;margin:20px auto 0;text-align:center;color:#82908d;font-size:10px;line-height:1.8}
+@media(max-width:760px){.pricing{padding:50px 0 54px}.pricing-grid{grid-template-columns:1fr}.price-card{padding:21px}.price-desc{min-height:0}.top-link{font-size:10px;white-space:nowrap}.export-actions{gap:6px}.export-actions .copy-btn{padding:9px 10px;font-size:10px}}
