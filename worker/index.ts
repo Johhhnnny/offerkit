@@ -41,23 +41,23 @@ Platform: ${platform}
 Desired tone: ${tone}
 Owner-provided contact details: ${contactDetails}`;
 
-      const prompt = kind === "Content calendar" ? `You are OfferKit AI's senior content strategist and copywriter. Build a practical, coherent seven-day campaign, not seven repetitive captions.
+      const prompt = kind === "Content calendar" ? `You are OfferKit AI's senior content strategist and copywriter. Build a coordinated seven-day campaign that a small business can realistically execute, with finished captions rather than generic suggestions.
 
 BRIEF
 ${brief}
 
-DELIVERABLE
-Return exactly Day 1 through Day 7. Give every day:
-- Strategic purpose for that day.
-- A specific creative idea that can realistically be produced by a small business.
-- A polished, ready-to-publish caption with a strong opening, natural rhythm and a clear next step.
-- Suggested format and what to show in the image/video.
+Create exactly Day 1 through Day 7. Give every day:
+PURPOSE: a distinct role in the overall campaign.
+POST IDEA: a specific, feasible concept, not simply "promote the business".
+HOOK: the actual opening line or headline.
+READY-TO-PUBLISH CAPTION: polished, natural copy with a clear offer and one next step.
+VISUAL/FORMAT: specific guidance for a real photo, phone video, carousel, question or poll.
 
-CAMPAIGN FLOW
-Make the week tell a story: attract attention; make the offer clear; educate or answer a genuine question; show a real behind-the-scenes angle; address a likely hesitation without inventing claims; invite interaction; then make a clear, direct offer or enquiry invitation. Adapt the sequence to the actual business and offer. Do not use a day that makes no sense for this business.
+Use a varied, sensible sequence: attract attention; show the actual offer; answer a relevant question or explain a real detail; suggest an authentic demonstration; address a plausible hesitation without inventing claims; invite useful interaction; then make a clear enquiry/order invitation. Adapt to the business rather than forcing a sequence that doesn't fit. Each day must have a distinct idea, format and opening.
 
-QUALITY AND FACTUAL ACCURACY
-Write clean, natural, professional English with correct grammar, punctuation and structure. Use vivid, specific hooks rather than stock openings. Make each day meaningfully different. Use only the products, services and facts in the brief. Never invent prices, discounts, stock levels, testimonials, customer results, guarantees, awards, opening hours or scarcity. No placeholders and no repeated filler. Include contact details only when supplied. If essential information is missing, write a useful caption that invites people to message for details without pretending those details are known. Return the plan only, with clear headings.` :
+QUALITY BAR: correct grammar, purposeful structure, vivid but credible hooks, mobile-friendly paragraphs and a clear reason for the customer to care. Avoid repeated phrases, generic filler, cliché openers, empty superlatives, excessive emojis and unnecessary hashtags. Captions must be complete and publishable; strategy notes belong outside the caption.
+
+FACTUAL ACCURACY: use only the brief. Never invent prices, discounts, ingredients, preparation methods, stock, delivery, shelf life, health/safety claims, awards, testimonials, guarantees, opening hours, customer outcomes or scarcity. Do not imply food is ready to eat or safe to store unless stated. Use contact details exactly as supplied. If details are missing, invite enquiries rather than guessing. Return the seven-day plan only, with clear headings.` :
       kind === "Campaign ideas" ? `You are OfferKit AI's senior advertising strategist and award-winning copywriter. Create three commercially useful, genuinely distinct campaign concepts. Think like a strategist planning real work for a small business, not a chatbot filling a template.
 
 BRIEF
@@ -140,26 +140,18 @@ Create three distinct versions:
 Each version needs a strong first line, clear explanation of the offer, short paragraphs and one specific next step. Match the requested tone, but sound human and credible—not spammy, overly formal or like a forwarded chain message. Emojis are optional and restrained. Do not ask readers to forward/share by default.
 
 Use excellent grammar and punctuation. Never invent prices, discounts, stock, delivery, benefits, testimonials, popularity, urgency, preparation methods, shelf life or results. Preserve contact details exactly as supplied; never add a number or address that wasn't provided. If details are missing, invite a message for information. The versions must differ in idea and structure, not just synonyms. Separate exactly three versions with this line: ---VERSION---. Return only the adverts.` :
-      `You are OfferKit AI's senior advertising copywriter. Your goal is to produce three genuinely different, ready-to-publish adverts—not three versions of generic filler.
+      `You are OfferKit AI's senior social-media copywriter and direct-response strategist. Write three distinct, ready-to-publish posts for this business. Treat each option as a different creative idea, not a synonym exercise.
 
 BRIEF
 ${brief}
 
-Return exactly three complete versions separated by this exact line on its own: ---VERSION---.
-VERSION 1 — CATCHY: Lead with the strongest relevant hook. Make the first line specific, intriguing and easy to understand.
-VERSION 2 — CUSTOMER-FOCUSED: Start from a relatable customer need, preference or occasion supported by the brief; show why the offer is relevant.
-VERSION 3 — BOLD AND REFINED: Use concise, confident language and a memorable headline without exaggeration.
+VERSION 1 — THE STOP-SCROLL HOOK: open with a specific, relevant line that makes the reader curious without clickbait. Clearly state the real offer and its relevance.
+VERSION 2 — CUSTOMER-FOCUSED: start with a plausible need, preference or occasion that fits the brief, then connect it to the offer without making unsupported claims.
+VERSION 3 — CLEAN AND CONFIDENT: a more concise, memorable post with a strong headline and direct next step.
 
-COPYWRITING STANDARD
-- Use excellent grammar, punctuation, natural phrasing and clear paragraph structure.
-- Make the offer unmistakable; focus on its real customer value rather than empty praise.
-- Make each version distinct in idea, rhythm and angle—not simple synonym swaps.
-- Tailor length, formatting and call to action to the selected platform and tone.
-- Use a specific, credible CTA. When no contact details are provided, invite the reader to message or enquire.
-- Keep language clear, modern and human. Avoid repetitive openers, generic slogans, awkward phrasing, excessive emojis, random hashtags and fake urgency.
-- Use only details stated in the brief. Never invent price, discounts, stock, delivery, location, opening hours, testimonials, guarantees, awards or results.
-- Do not mention products or services unrelated to what the owner supplied.
-- Return only the three adverts: no intro, explanations, headings outside the three versions, or closing commentary.`;
+Each version must include a complete caption and one clear call to action. Adapt formatting and length to the selected platform. Use natural, polished English, short readable paragraphs and specific wording. Add hashtags only if useful for the platform and business. Emojis are optional; never use them as a substitute for copy.
+
+Do not invent prices, discounts, availability, delivery, benefits, customer results, testimonials, popularity, awards, guarantees, urgency or other facts. Do not introduce products or services absent from the brief. Preserve provided contact details exactly and never add missing contact details. Avoid generic filler, robotic phrasing, repetitive openings and empty superlatives. Make the three approaches different in message and structure. Separate exactly three versions with this line: ---VERSION---. Return only the posts.`;
       const output = await env.AI.run("@cf/meta/llama-3.1-8b-instruct-fast", {
         messages: [
           { role: "system", content: "You write natural, concise marketing copy for small businesses. Do not invent facts such as prices, locations, guarantees or contact details." },
