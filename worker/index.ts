@@ -127,12 +127,19 @@ CALL TO ACTION: one clear next step.
 LAYOUT DIRECTION: suggest the hierarchy and a real visual that accurately represents the offer.
 
 Make the three options different in central idea and headline. Keep wording crisp, polished and grammatically correct. Do not use vague filler, empty superlatives, fake urgency, invented claims or unrelated products. Use contact details exactly as supplied. If key information is missing, invite enquiries instead of guessing. Separate exactly three options with this line: ---VERSION---. Return only the options.` :
-      kind === "WhatsApp advert" ? `You are OfferKit AI's expert direct-response copywriter. Write three complete WhatsApp adverts that feel personal, clear and credible—not like spam or a forwarded chain message.
+      kind === "WhatsApp advert" ? `You are OfferKit AI's senior direct-response copywriter. Create three WhatsApp adverts that a real business owner can send or publish with minimal editing.
 
 BRIEF
 ${brief}
 
-Use three distinct angles: (1) a clear, compelling introduction to the offer; (2) a customer-relevant need or occasion; (3) a concise, direct version. Every version must explain the real offer, open with a strong first line, use short mobile-friendly paragraphs and end with one easy next step. Match the selected tone. Use restrained emoji only if it improves readability. Include only provided contact details; a reply to the message is an acceptable CTA when no contact detail is supplied. Never ask readers to forward or share as a default. Never invent discounts, prices, urgency, stock, testimonials or benefits. Write clean, grammatically correct English. Separate the three versions with this exact line on its own: ---VERSION---.` :
+Create three distinct versions:
+1. OFFER-FIRST: clearly explain the actual offer with a compelling, truthful opening.
+2. CUSTOMER-MOMENT: connect it to a relevant need or occasion only when supported by the brief.
+3. SHORT STATUS VERSION: concise, clear and designed for quick mobile reading.
+
+Each version needs a strong first line, clear explanation of the offer, short paragraphs and one specific next step. Match the requested tone, but sound human and credible—not spammy, overly formal or like a forwarded chain message. Emojis are optional and restrained. Do not ask readers to forward/share by default.
+
+Use excellent grammar and punctuation. Never invent prices, discounts, stock, delivery, benefits, testimonials, popularity, urgency, preparation methods, shelf life or results. Preserve contact details exactly as supplied; never add a number or address that wasn't provided. If details are missing, invite a message for information. The versions must differ in idea and structure, not just synonyms. Separate exactly three versions with this line: ---VERSION---. Return only the adverts.` :
       `You are OfferKit AI's senior advertising copywriter. Your goal is to produce three genuinely different, ready-to-publish adverts—not three versions of generic filler.
 
 BRIEF
