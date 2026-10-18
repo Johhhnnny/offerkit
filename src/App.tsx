@@ -134,6 +134,80 @@ function makeSample(f: GenerateRequest) {
   const audience = f.audience.trim() || "you";
   const contact = [f.phone.trim() ? `Call: ${f.phone.trim()}` : "", f.whatsapp.trim() ? `WhatsApp: ${f.whatsapp.trim()}` : "", f.location.trim() ? `Location: ${f.location.trim()}` : ""].filter(Boolean).join("\\n");
   const contactLine = contact ? `\\n\\n${contact}` : "";
+  if (f.kind === "Complete campaign pack") return `COMPLETE CAMPAIGN PACK — ${name.toUpperCase()}
+
+CAMPAIGN CORE
+Main offer: ${offer}
+Objective: Make the offer clear and invite interested customers to enquire.
+
+SOCIAL ADVERT
+Looking for ${offer}? ${name} is sharing this offer for ${audience}. Message us to learn more and discuss your needs.${contactLine}
+
+WHATSAPP MESSAGE
+Hello! We wanted to share this with you: ${offer}. Contact ${name} for details or to enquire.${contactLine}
+
+FLYER COPY
+HEADLINE: ${name.toUpperCase()}
+SUPPORTING LINE: ${offer}
+BODY: Get in touch to learn more about the offer and available details.
+CALL TO ACTION: Message us to enquire.${contactLine}
+
+SHORT VIDEO
+0–3s: Show the actual product/service. On-screen text: "${offer}".
+3–10s: Capture a clear close-up or straightforward demonstration of the offer.
+10–15s: Show the business name and invite viewers to enquire.
+Caption: ${name} — ${offer}. Message us for details.
+
+FOLLOW-UP MESSAGES
+1. Hello! Just checking whether you had any questions about ${offer}. Happy to share more details.
+2. Thanks for your interest in ${name}. If you'd like more information about ${offer}, send us a message.
+
+SEVEN-DAY ROLL-OUT
+Day 1: Introduce the offer with a clear photo.
+Day 2: Show the offer more closely.
+Day 3: Invite questions about the offer.
+Day 4: Share a real behind-the-scenes image, if relevant.
+Day 5: Explain a confirmed detail about the offer.
+Day 6: Ask the audience what they would like to know.
+Day 7: Repeat the offer with a clear invitation to enquire.
+
+Sample fallback only: reconnect the AI service for a fully tailored campaign. `;
+  if (f.kind === "Campaign ideas") return `CAMPAIGN IDEA 1 — MAKE THE OFFER CLEAR
+Objective: Help customers understand what's being promoted.
+Hook: "Here's what ${name} is featuring."
+Advert: ${offer}. Message ${name} to learn more and ask any questions.${contactLine}
+Visual: Use a real photo or short close-up of the actual offer.
+CTA: Send us a message to enquire.
+
+---VERSION---
+
+CAMPAIGN IDEA 2 — ANSWER A CUSTOMER QUESTION
+Objective: Start useful conversations with potential customers.
+Hook: "What would you like to know about ${offer}?"
+Advert: Considering ${offer}? Tell us what information would help you decide, and contact ${name} for details.${contactLine}
+Visual: Film a short Q&A or create a simple question graphic.
+CTA: Message us with your question.
+
+---VERSION---
+
+CAMPAIGN IDEA 3 — SHOW, DON'T JUST TELL
+Objective: Present the real offer clearly and visually.
+Hook: "Take a closer look."
+Advert: A closer look at ${offer} from ${name}. Get in touch for more information.${contactLine}
+Visual: Film the real product/service in natural light without adding effects that misrepresent it.
+CTA: Contact us to enquire.
+
+Sample fallback only: reconnect the AI service for deeper strategy and bespoke campaign concepts.`;
+  if (f.kind === "Rewrite my advert") return `POLISHED VERSION
+${offer}
+
+MORE PERSUASIVE VERSION
+${offer}
+
+SHORT AND DIRECT VERSION
+${offer}
+
+Sample fallback only: reconnect the AI service for a true rewrite. The original text is preserved here so its facts are not accidentally changed.`;
   if (f.kind === "Content calendar") return `7-DAY CONTENT PLAN — ${name.toUpperCase()}\n\nDAY 1 — INTRODUCE THE BUSINESS\nPost: Introduce what you do and who you serve.\nCaption idea: Meet ${name}. We help ${audience} with ${offer}. Send us a message to learn more.\nFormat: Photo or short video.\n\nDAY 2 — SHOW THE OFFER\nPost: Show the product or service clearly.\nCaption idea: Here is what we are featuring: ${offer}. What would you like to know?\nFormat: Product photo or short demo.\n\nDAY 3 — ANSWER A QUESTION\nPost: Answer one common customer question about the offer.\nCaption idea: Curious about ${offer}? Send us your questions and we will help you understand the details.\nFormat: Text graphic or talking video.\n\nDAY 4 — BEHIND THE SCENES\nPost: Show the real people, process or preparation behind the business.\nCaption idea: A little behind-the-scenes look at ${name}.\nFormat: Short video or photo carousel.\n\nDAY 5 — CUSTOMER BENEFIT\nPost: Explain one genuine benefit of the offer without making unsupported promises.\nCaption idea: If you are looking for ${offer}, get in touch and we can share the details.\nFormat: Photo with a short caption.\n\nDAY 6 — COMMUNITY / INTERACTION\nPost: Ask your audience a simple question related to the offer.\nCaption idea: We would love to hear from you, ${audience}. What would you like us to feature next?\nFormat: Story, poll or question post.\n\nDAY 7 — CLEAR CALL TO ACTION\nPost: Remind people how to enquire or order.\nCaption idea: Ready to find out more about ${offer}? Send us a message.${f.phone.trim() ? ` Call: ${f.phone.trim()}.` : ""}${f.whatsapp.trim() ? ` WhatsApp: ${f.whatsapp.trim()}.` : ""}${f.location.trim() ? ` Visit us at ${f.location.trim()}.` : ""}\nFormat: Best product photo or short recap.\n\nTip: Use real photos and only publish contact details you have confirmed.`;
   if (f.kind === "Video idea") return `SHORT VIDEO IDEA — ${name.toUpperCase()}\n\nHook (first 2 seconds): “Wait—have you seen this?”\n\nScene 1: Show the product, service or experience up close.\nScene 2: Put the offer on screen: ${offer}.\nScene 3: Show how a customer can get it.\n\nCaption: A little something for ${audience}. Send us a message to find out more!\n\nKeep it vertical, use clear lighting, and add captions.`;
   if (f.kind === "Flyer copy") return `${name.toUpperCase()}\n\n${offer.toUpperCase()}\n\nMade with ${audience} in mind.\n\nGet in touch today for details, bookings or orders.\n\nYour next favourite is closer than you think.`;
