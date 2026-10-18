@@ -100,26 +100,33 @@ VERSION 3 — SHORT AND DIRECT
 Produce a concise, memorable version suitable for quick reading on the selected platform, without losing the core offer.
 
 Each version must be a complete advert, not notes or editing advice. Remove repetition, awkward wording, empty superlatives and cliché phrases. Avoid robotic phrasing, excessive emojis, hashtags or exclamation marks. Do not fabricate missing contact details, price, urgency, scarcity, proof or guarantees. If the source has ambiguity, preserve it rather than guessing. If the source is blank or does not contain an advert, ask the owner for the draft they want improved instead of inventing one. Separate the three versions with this exact line on its own: ---VERSION---.` :
-      kind === "Video idea" ? `You are OfferKit AI's creative director and short-form video scriptwriter. Create three distinct, executable video ad concepts for this business and platform—not vague ideas and not the same script with different wording.
+      kind === "Video idea" ? `You are OfferKit AI's creative director and conversion copywriter. Produce three different, practical video ads, each designed around a distinct idea rather than rewording one script.
 
 BRIEF
 ${brief}
 
-For each concept, provide:
-CONCEPT TITLE
-LENGTH: choose a suitable duration (15, 30 or 60 seconds).
-OPENING HOOK: the exact first line or opening visual designed to earn attention without misleading the viewer.
-SCENE-BY-SCENE SCRIPT: give timestamps, what the viewer sees, spoken dialogue or voice-over, and on-screen text.
-CAPTION: a finished caption for posting the video.
-CALL TO ACTION: one specific next step.
+For each option include:
+CONCEPT AND OBJECTIVE: what this video is meant to communicate.
+OPENING (0–3 SECONDS): exact spoken line and/or first visual. It must be relevant and truthful, not clickbait.
+SHOT LIST AND SCRIPT: timestamps, specific visuals, dialogue/voice-over and on-screen text.
+CAPTION: complete polished caption for the selected platform.
+CALL TO ACTION: one clear next step.
 
-Make the three concepts clearly different in creative angle and opening. Keep each practical to film with a phone and ordinary resources unless the brief supports something more elaborate. Use details of the real offer, not generic "have you seen this?" hooks. The first few seconds must be interesting and relevant. Write clean, natural dialogue and polished on-screen text. Never invent prices, product benefits, customer reactions, results, discounts, availability or guarantees. Include contact information only if supplied. Separate the three concepts with this exact line on its own: ---VERSION---.` :
-      kind === "Flyer copy" ? `You are OfferKit AI's professional advertising copywriter. Write three strong, ready-to-design flyer copy options for the business and offer below. The options should differ in creative angle, not merely exchange a few words.
+Make the three approaches distinct: one can clearly showcase the offer, one can demonstrate or explain a real detail supplied in the brief, and one can use a relevant question or customer occasion without assuming facts. Make them feasible to film with a phone. Use clean, natural spoken English and short, readable on-screen text. Never invent customer reactions, preparation methods, product benefits, results, prices, discounts, availability or guarantees. Do not imply a product is safe to store, ready to eat or has a particular shelf life unless the brief explicitly says so. Use contact details only as supplied. No generic "wait until you see this" openings unless there is a real reveal. Separate exactly three options with this line: ---VERSION---. Return only the options.` :
+      kind === "Flyer copy" ? `You are OfferKit AI's senior print-advertising copywriter. Write three distinct, ready-to-design flyer concepts that are concise enough to fit a real flyer and clear enough for a designer to lay out.
 
 BRIEF
 ${brief}
 
-Each option must include a concise headline; a supporting line that makes the offer clear; a short body that explains the value to the intended audience; and a prominent, natural call to action. Include only the contact details the owner supplied. Structure the text so a designer can clearly distinguish headline, body and CTA. Keep it concise enough to fit a real flyer. Use specific, memorable language, polished grammar and platform-appropriate tone. Never invent prices, discounts, dates, venues, opening hours, availability or claims. Avoid generic filler such as "the best experience awaits" unless supported and genuinely relevant. Separate the three options with this exact line on its own: ---VERSION---.` :
+Each option must include:
+HEADLINE: a memorable, specific headline that clearly relates to the real offer.
+SUPPORTING LINE: explain what is being offered.
+BODY COPY: a short, persuasive paragraph focused on a genuine customer-relevant reason to care.
+KEY DETAILS: include only relevant details supplied by the owner; do not invent price, date, venue, opening hours or availability.
+CALL TO ACTION: one clear next step.
+LAYOUT DIRECTION: suggest the hierarchy and a real visual that accurately represents the offer.
+
+Make the three options different in central idea and headline. Keep wording crisp, polished and grammatically correct. Do not use vague filler, empty superlatives, fake urgency, invented claims or unrelated products. Use contact details exactly as supplied. If key information is missing, invite enquiries instead of guessing. Separate exactly three options with this line: ---VERSION---. Return only the options.` :
       kind === "WhatsApp advert" ? `You are OfferKit AI's expert direct-response copywriter. Write three complete WhatsApp adverts that feel personal, clear and credible—not like spam or a forwarded chain message.
 
 BRIEF
