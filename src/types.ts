@@ -1,4 +1,4 @@
-export type ContentKind = "Social caption" | "WhatsApp advert" | "Content calendar" | "Flyer copy" | "Video idea" | "Campaign ideas" | "Rewrite my advert";
+export type ContentKind = "Social caption" | "WhatsApp advert" | "Content calendar" | "Flyer copy" | "Video idea" | "Campaign ideas" | "Rewrite my advert" | "Complete campaign pack";
 export type Tone = "Friendly" | "Bold" | "Premium" | "Funny" | "Professional";
 export interface GenerateRequest {
   businessName: string;
