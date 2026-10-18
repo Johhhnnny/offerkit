@@ -5,6 +5,21 @@ const kinds: ContentKind[] = ["Social caption", "WhatsApp advert", "Content cale
 const tones: Tone[] = ["Friendly", "Bold", "Premium", "Funny", "Professional"];
 const PROFILE_KEY = "offerkit.brand-profile.v1";
 const DRAFTS_KEY = "offerkit.saved-drafts.v1";
+const USAGE_KEY = "offerkit.daily-usage.v1";
+const FREE_DAILY_LIMIT = 3;
+type DailyUsage = { date: string; count: number };
+
+function localDateStamp() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+function readUsage(): DailyUsage {
+  try {
+    const value = JSON.parse(localStorage.getItem(USAGE_KEY) || "null") as DailyUsage | null;
+    if (value && value.date === localDateStamp() && Number.isFinite(value.count) && value.count >= 0) return value;
+  } catch { /* use a fresh local counter */ }
+  return { date: localDateStamp(), count: 0 };
+}
 type BrandProfile = Pick<GenerateRequest, "businessName" | "businessType" | "audience" | "phone" | "whatsapp" | "location" | "platform" | "tone">;
 type SavedDraft = { id: string; businessName: string; kind: ContentKind; text: string; savedAt: string };
 
@@ -29,6 +44,7 @@ export default function App() {
   const [error, setError] = useState("");
   const [savedDrafts, setSavedDrafts] = useState<SavedDraft[]>(readDrafts);
   const [saveNotice, setSaveNotice] = useState("");
+  const [usage, setUsage] = useState<DailyUsage>(readUsage);
 
   function saveProfile() {
     const profile: BrandProfile = {
@@ -75,7 +91,29 @@ export default function App() {
     setForm(current => ({ ...current, [key]: value }));
   }
 
+  function downloadResult(format: "txt" | "md") {
+    if (!result.trim()) return;
+    const base = [form.businessName || "offerkit", form.kind]
+      .join("-").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 100);
+    const content = format === "md"
+      ? `# ${form.businessName.trim() || "OfferKit result"}\n\n**Content type:** ${form.kind}  \n**Platform:** ${form.platform}\n\n---\n\n${result.trim()}\n`
+      : result.trim() + "\n";
+    const blob = new Blob([content], { type: format === "md" ? "text/markdown;charset=utf-8" : "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url; anchor.download = `${base || "offerkit-content"}.${format}`;
+    document.body.appendChild(anchor); anchor.click(); anchor.remove();
+    URL.revokeObjectURL(url);
+    setSaveNotice(`Downloaded ${format.toUpperCase()} file.`);
+  }
+
   async function generate() {
+    const currentUsage = readUsage();
+    setUsage(currentUsage);
+    if (currentUsage.count >= FREE_DAILY_LIMIT) {
+      setError(`You've used all ${FREE_DAILY_LIMIT} free generations for today in this browser. The pricing section explains the planned paid options; checkout is not active yet.`);
+      return;
+    }
     setLoading(true); setError(""); setResult("");
     try {
       const endpoint = import.meta.env.VITE_API_URL || "https://offerkit-ai.josephmedeadzone.workers.dev";
@@ -86,6 +124,9 @@ export default function App() {
       const data = await response.json() as { text?: string; error?: string };
       if (!data.text) throw new Error(data.error || "No content was returned.");
       setResult(data.text);
+      const nextUsage = { date: localDateStamp(), count: currentUsage.count + 1 };
+      setUsage(nextUsage);
+      try { localStorage.setItem(USAGE_KEY, JSON.stringify(nextUsage)); } catch { /* keep in-memory count for this page */ }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Something went wrong.");
       setResult(makeSample(form));
@@ -93,7 +134,7 @@ export default function App() {
   }
 
   return <main className="app-shell">
-    <nav className="topbar"><a className="brand" href="#"><span className="brand-mark">O</span> offerkit<span className="brand-ai">AI</span></a><span className="top-note">Your tiny marketing team</span><a className="top-link" href="#how-it-works">How it works ↗</a></nav>
+    <nav className="topbar"><a className="brand" href="#"><span className="brand-mark">O</span> offerkit<span className="brand-ai">AI</span></a><span className="top-note">Your tiny marketing team</span><a className="top-link" href="#how-it-works">How it works ↗</a><a className="top-link" href="#pricing">Pricing ↗</a></nav>
     <section className="hero">
       <div className="eyebrow"><span className="pulse" /> MADE FOR SMALL BUSINESSES</div>
       <h1>Good ideas deserve<br /><em>great marketing.</em></h1>
@@ -114,16 +155,25 @@ export default function App() {
         <label>Content type<div className="kind-options">{kinds.map(x => <button type="button" key={x} className={form.kind === x ? "kind-option active" : "kind-option"} onClick={() => update("kind", x)}>{x === "Content calendar" ? "📅 7-day content plan" : x}</button>)}</div></label><label>Where will you post?<select value={form.platform} onChange={e => update("platform", e.target.value)}>{["Instagram","WhatsApp","Facebook","TikTok","X","Any platform"].map(x => <option key={x}>{x}</option>)}</select></label>
         <label>Choose a vibe<div className="tone-options">{tones.map(t => <button type="button" key={t} className={form.tone === t ? "tone active" : "tone"} onClick={() => update("tone", t)}>{t}</button>)}</div></label>
         <button className="generate" onClick={generate} disabled={loading}>{loading ? "Creating your content…" : "✦  Create my content"} <span>→</span></button>
-        <p className="fine-print">A useful first draft, ready for your personal touch.</p>
+        <p className="fine-print">A useful first draft, ready for your personal touch.</p><p className="usage-note">{usage.count} of {FREE_DAILY_LIMIT} free generations used today · {Math.max(0, FREE_DAILY_LIMIT - usage.count)} remaining in this browser</p>
       </div>
       <div className="result-panel">
         <div className="result-top"><div><span className="step">02 / YOUR CONTENT</span><h2>The good stuff.</h2></div><span className="live-pill"><span /> READY WHEN YOU ARE</span></div>
-        {result ? <div className="result-content">{form.kind === "Content calendar" || form.kind === "Complete campaign pack" ? <><div className="result-label">{form.kind === "Content calendar" ? "YOUR 7-DAY CONTENT PLAN" : "YOUR COMPLETE CAMPAIGN PACK"}</div><div className="result-text calendar-result">{result}</div><button className="copy-btn" onClick={() => navigator.clipboard.writeText(result).catch(() => {})}>{form.kind === "Content calendar" ? "Copy 7-day plan ↗" : "Copy complete campaign ↗"}</button></> : <><div className="result-label">YOUR {form.kind.toUpperCase()} · 3 OPTIONS</div>{result.split(/\n---VERSION---\n/i).map((version, index) => <article className="version-card" key={index}><div className="version-heading"><span className="result-label">{(form.kind === "Campaign ideas" ? ["01 / CAMPAIGN CONCEPT", "02 / CAMPAIGN CONCEPT", "03 / CAMPAIGN CONCEPT"] : form.kind === "Rewrite my advert" ? ["01 / POLISHED VERSION", "02 / MORE PERSUASIVE", "03 / SHORT & DIRECT"] : form.kind === "Video idea" ? ["01 / VIDEO CONCEPT", "02 / VIDEO CONCEPT", "03 / VIDEO CONCEPT"] : ["01 / CATCHY", "02 / FRIENDLY", "03 / PREMIUM"])[index] || `OPTION ${index + 1}`}</span><button className="copy-btn" onClick={() => navigator.clipboard.writeText(version.trim()).catch(() => {})}>Copy full concept ↗</button>{form.kind === "Campaign ideas" && <button className="copy-btn" onClick={() => { const match = version.match(/READY-TO-USE ADVERT:\s*([\\s\\S]*?)(?=\\n(?:VISUAL EXECUTION|CALL TO ACTION):|$)/i); navigator.clipboard.writeText((match ? match[1] : version).trim()).catch(() => {}); }}>Copy advert only ↗</button>}</div><div className="result-text">{version.replace(/^VERSION\s*\d+\s*:\s*/i, "").trim()}</div></article>)}</>}{error && <p className="notice">{error} Showing a sample draft.</p>}<button className="copy-btn save-result-btn" onClick={saveDraft}>Save this result ↗</button>{saveNotice && <p className="storage-note">{saveNotice}</p>}</div> : <div className="empty-result"><div className="paper-art"><div className="paper-line long" /><div className="paper-line" /><div className="paper-line short" /><div className="paper-star">✳</div></div><h3>Your next great post<br />starts right here.</h3><p>Fill in a few details and let OfferKit turn your idea into content your customers will notice.</p><span className="result-hint">YOUR CONTENT WILL APPEAR HERE ↗</span></div>}
+        {result ? <div className="result-content"><div className="export-actions"><button className="copy-btn" onClick={() => downloadResult("txt")}>Download .txt ↧</button><button className="copy-btn" onClick={() => downloadResult("md")}>Download .md ↧</button></div>{form.kind === "Content calendar" || form.kind === "Complete campaign pack" ? <><div className="result-label">{form.kind === "Content calendar" ? "YOUR 7-DAY CONTENT PLAN" : "YOUR COMPLETE CAMPAIGN PACK"}</div><div className="result-text calendar-result">{result}</div><button className="copy-btn" onClick={() => navigator.clipboard.writeText(result).catch(() => {})}>{form.kind === "Content calendar" ? "Copy 7-day plan ↗" : "Copy complete campaign ↗"}</button></> : <><div className="result-label">YOUR {form.kind.toUpperCase()} · 3 OPTIONS</div>{result.split(/\n---VERSION---\n/i).map((version, index) => <article className="version-card" key={index}><div className="version-heading"><span className="result-label">{(form.kind === "Campaign ideas" ? ["01 / CAMPAIGN CONCEPT", "02 / CAMPAIGN CONCEPT", "03 / CAMPAIGN CONCEPT"] : form.kind === "Rewrite my advert" ? ["01 / POLISHED VERSION", "02 / MORE PERSUASIVE", "03 / SHORT & DIRECT"] : form.kind === "Video idea" ? ["01 / VIDEO CONCEPT", "02 / VIDEO CONCEPT", "03 / VIDEO CONCEPT"] : ["01 / CATCHY", "02 / FRIENDLY", "03 / PREMIUM"])[index] || `OPTION ${index + 1}`}</span><button className="copy-btn" onClick={() => navigator.clipboard.writeText(version.trim()).catch(() => {})}>Copy full concept ↗</button>{form.kind === "Campaign ideas" && <button className="copy-btn" onClick={() => { const match = version.match(/READY-TO-USE ADVERT:\s*([\\s\\S]*?)(?=\\n(?:VISUAL EXECUTION|CALL TO ACTION):|$)/i); navigator.clipboard.writeText((match ? match[1] : version).trim()).catch(() => {}); }}>Copy advert only ↗</button>}</div><div className="result-text">{version.replace(/^VERSION\s*\d+\s*:\s*/i, "").trim()}</div></article>)}</>}{error && <p className="notice">{error} Showing a sample draft.</p>}<button className="copy-btn save-result-btn" onClick={saveDraft}>Save this result ↗</button>{saveNotice && <p className="storage-note">{saveNotice}</p>}</div> : <div className="empty-result"><div className="paper-art"><div className="paper-line long" /><div className="paper-line" /><div className="paper-line short" /><div className="paper-star">✳</div></div><h3>Your next great post<br />starts right here.</h3><p>Fill in a few details and let OfferKit turn your idea into content your customers will notice.</p><span className="result-hint">YOUR CONTENT WILL APPEAR HERE ↗</span></div>}
         {savedDrafts.length > 0 && <section className="saved-work"><div className="saved-work-heading"><div><span className="step">YOUR LIBRARY</span><h3>Saved results</h3></div><span className="storage-note">{savedDrafts.length} / 20 saved on this device</span></div>{savedDrafts.map(draft => <article className="saved-draft" key={draft.id}><div className="saved-draft-copy"><strong>{draft.businessName}</strong><span>{draft.kind} · {draft.savedAt}</span><p>{draft.text.slice(0, 150)}{draft.text.length > 150 ? "…" : ""}</p></div><div className="saved-draft-actions"><button className="copy-btn" onClick={() => openDraft(draft)}>Open ↗</button><button className="copy-btn" onClick={() => navigator.clipboard.writeText(draft.text).catch(() => {})}>Copy ↗</button><button className="copy-btn" onClick={() => deleteDraft(draft.id)}>Delete</button></div></article>)}</section>}
         <div className="result-footer"><span>✦ Made for the people building something.</span><span>OfferKit AI · Preview</span></div>
       </div>
     </section>
     <section className="how" id="how-it-works"><span className="step">NO MARKETING DEGREE REQUIRED</span><h2>Simple as 1, 2, <em>done.</em></h2><div className="how-grid"><article><b>01</b><h3>Tell us the plan</h3><p>What you sell, what’s special, and who you want to reach.</p></article><article><b>02</b><h3>Pick your vibe</h3><p>Make it friendly, premium, bold, funny or professional.</p></article><article><b>03</b><h3>Make it yours</h3><p>Get a draft you can tweak, copy and share with customers.</p></article></div></section>
+    <section className="pricing" id="pricing">
+      <div className="pricing-intro"><span className="step">SIMPLE, TRANSPARENT PLANS</span><h2>Good marketing should <em>pay for itself.</em></h2><p>Start with the preview, save your best work, and choose a plan when paid access is ready.</p><div className="pricing-notice"><strong>Launch pricing preview</strong><span>Prices are proposed, not a live offer. Subscriptions, payment collection and account-based limits are not active yet.</span></div></div>
+      <div className="pricing-grid">
+        <article className="price-card"><span className="price-eyebrow">START HERE</span><h3>Free Preview</h3><p className="price-amount">$0 <span>/ always</span></p><p className="price-desc">Explore OfferKit and create your first marketing drafts.</p><ul><li>3 successful generations per day in this browser</li><li>Captions, WhatsApp adverts, video, flyers and plans</li><li>Save a business profile on this device</li><li>Save up to 20 results locally</li><li>Download content as TXT or Markdown</li></ul><p className="price-status">Available in preview</p></article>
+        <article className="price-card price-card-featured"><span className="price-eyebrow">PLANNED SUBSCRIPTION</span><h3>OfferKit Pro</h3><p className="price-amount">$9 <span>/ month · proposed</span></p><p className="price-desc">For business owners who create content regularly.</p><ul><li>Higher monthly generation allowance</li><li>Complete multi-channel campaign packs</li><li>More advanced campaign planning</li><li>Cross-device library when accounts are added</li><li>Priority workflows and export options</li></ul><p className="price-status">Planned · checkout not active</p></article>
+        <article className="price-card"><span className="price-eyebrow">ONE-OFF OPTION</span><h3>Campaign Pack</h3><p className="price-amount">$4.99 <span>/ pack · proposed</span></p><p className="price-desc">A coordinated package for a product launch or promotion.</p><ul><li>Social advert and WhatsApp message</li><li>Flyer copy and short video script</li><li>Two customer follow-ups</li><li>Seven-day campaign rollout</li><li>Downloadable campaign document</li></ul><p className="price-status">Planned · checkout not active</p></article>
+      </div>
+      <p className="pricing-footnote">The free-generation counter is stored locally in this browser and is a preview convenience, not a secure account-level quota. Clearing site data or using another browser may reset it. Real paid access will require customer accounts, server-side usage tracking and a payment provider.</p>
+    </section>
     <footer><a className="brand" href="#"><span className="brand-mark">O</span> offerkit<span className="brand-ai">AI</span></a><span>Less blank-page panic. More business.</span><span>© 2026 OfferKit AI</span></footer>
   </main>;
 }
